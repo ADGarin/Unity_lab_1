@@ -34,6 +34,10 @@ public class CollisionTouchCheck : MonoBehaviour
     {
         IsGrounded = collision.Cast(Vector2.down, groundFilter, groundHits, groundCheckDistance)>0;
     }
+
+    //wall climb
+    //when character is close enough to any wall then
+    //falling slower 
 }
 
 
