@@ -7,12 +7,16 @@ public class Playercontroller : MonoBehaviour
 {
     //moveSpeed float
     //rigidbody2d.velocity
-    [SerializeField]
-    float moveSpeed = 100;
+    [SerializeField] float moveSpeed = 100;
+    [SerializeField] float teleportDistance = 5f;
+    GameObject firePrefab; 
+
 
     Rigidbody2D rb;
     CollisionTouchCheck colTouchCheck;
     SpriteRenderer spriteRenderer;
+
+
 
     void Awake()
     {
@@ -20,7 +24,6 @@ public class Playercontroller : MonoBehaviour
         colTouchCheck = GetComponent<CollisionTouchCheck>();
         spriteRenderer = GetComponent<SpriteRenderer>(); // Получаем компонент SpriteRenderer
     }
-
     Vector2 moveInput;
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -35,13 +38,12 @@ public class Playercontroller : MonoBehaviour
         {
             spriteRenderer.flipX = true; // Смотрит влево
         }
-    }
 
+    }
     void FixedUpdate()
     {
         rb.velocity = new Vector2(moveInput.x * moveSpeed * Time.fixedDeltaTime, rb.velocity.y);
     }
-
     [SerializeField]
     float jumpImpulse = 20;
     public void OnJump(InputAction.CallbackContext context)
@@ -61,4 +63,38 @@ public class Playercontroller : MonoBehaviour
             }
         }
     }
+
+    public void OnTeleport(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            StartCoroutine(Teleport());
+        }
+    }
+
+    private IEnumerator Teleport()
+    {
+
+       
+        Vector2 newPosition = (Vector2)transform.position + new Vector2(teleportDistance * (spriteRenderer.flipX ? -1 : 1), 0);
+        if (!Physics2D.OverlapCircle(newPosition, 0.1f)) // используйте подходящий радиус
+        {
+            firePrefab = Resources.Load<GameObject>("FireEffect");
+            GameObject Fire = Instantiate(firePrefab, transform.position, Quaternion.identity);
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(0.2f);
+            transform.position = newPosition;
+            spriteRenderer.enabled = true;
+            GameObject Fire1 = Instantiate(firePrefab, transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(1f);
+            Destroy(Fire);
+            Destroy(Fire1);
+
+        }
+        else
+        {
+            Debug.Log("Телепортация заблокирована: препятствие");
+        }
+    }
 }
+

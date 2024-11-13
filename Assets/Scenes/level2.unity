@@ -617,6 +617,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: b94828e9-0d63-415e-a314-daaa2feb98a7
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 93405715}
+        m_TargetAssemblyTypeName: Playercontroller, Assembly-CSharp
+        m_MethodName: OnTeleport
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a7a67fc8-1d42-40df-a0c4-3247d0b96c85
+    m_ActionName: Player/Teleport[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -635,6 +651,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 400
+  teleportDistance: 5
+  firePrefab: {fileID: 196743091316267261, guid: 84bb318106f3e904b9c9110812e9c580, type: 3}
+  fireSpawnPoint: {fileID: 93405713}
   jumpImpulse: 18
 --- !u!114 &93405716
 MonoBehaviour:
