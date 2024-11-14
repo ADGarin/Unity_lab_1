@@ -19,7 +19,7 @@ public class CollisionTouchCheck : MonoBehaviour
               _isGrounded = value;
         }
     }
-    
+
     
     void Awake()
     {
