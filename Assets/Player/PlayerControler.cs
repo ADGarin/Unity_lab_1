@@ -28,6 +28,7 @@ public class PlayerMove : MonoBehaviour
     private Animator _animator;
     SpriteRenderer spriteRenderer;
 
+
     private void Start()
     {
         _animator = GetComponent<Animator>();
@@ -94,11 +95,11 @@ public class PlayerMove : MonoBehaviour
 
             if (_horizontalMove == 0)
             {
-                //_animator.SetBool("Walk", false);
+                _animator.SetBool("Walk", false);
             }
             else
             {
-                //_animator.SetBool("Walk", true);
+                _animator.SetBool("Walk", true);
             }
         }
     }
@@ -111,13 +112,15 @@ public class PlayerMove : MonoBehaviour
 
             if (_health <= 0)
             {
-                //_animator.SetTrigger("Died");
+                _animator.SetTrigger("Died");
                 Invoke(nameof(ResetScene), 2f);
                 _died = true;
             }
             if (transform.position.y <= -10f)
             {
-                RestartLevel();
+                _animator.SetTrigger("Died");
+                Invoke(nameof(ResetScene), 2f);
+                _died = true;
             }
 
             if (Input.GetButtonDown("Cancel"))
@@ -133,11 +136,11 @@ public class PlayerMove : MonoBehaviour
 
             if (_isGrounded)
             {
-                //_animator.SetBool("Jump", false);
+                _animator.SetBool("Jump", false);
             }
             else
             {
-                //_animator.SetBool("Jump", true);
+                _animator.SetBool("Jump", true);
             }
             Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - _rotate.transform.position;
             float rot2 = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
@@ -146,14 +149,22 @@ public class PlayerMove : MonoBehaviour
 
             if (_timeShots <= 0)
             {
+<<<<<<< HEAD
                 if (Input.GetMouseButton(0))
+=======
+                if(Input.GetMouseButton(0) )
+>>>>>>> d87e0fe6bae0617a035ecf94b6a0bfc46151cce5
                 {
-                    Instantiate(_bullet, _shotPoint.position, _rotate.transform.rotation);
+                    
+                    _animator.SetBool("Attack",true);
+                                       
                     _timeShots = _startTimeShots;
                 }
+                
             }
             else
             {
+                
                 _timeShots -= Time.deltaTime;
             }
 
@@ -161,18 +172,26 @@ public class PlayerMove : MonoBehaviour
 
         }
     }
-
+    
     void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
+    public void AttackToogle()
+    {
+        GetComponent<Animator>().SetBool("Attack", false);
+        
+    }
+    public void SetBullet()
+    {
+        Instantiate(_bullet, _shotPoint.position, _rotate.transform.rotation);
+    }
     public void TakeDamage(int damage)
     {
         if (!_died)
         {
             _health -= damage;
-            //_animator.SetTrigger("Damage");
+            _animator.SetTrigger("Damage");
         }
     }
 
