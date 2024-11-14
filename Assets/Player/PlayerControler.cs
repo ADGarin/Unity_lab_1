@@ -33,9 +33,7 @@ public class PlayerMove : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        PlayerProgress.SaveProgress(currentSceneIndex);
+        spriteRenderer = GetComponent<SpriteRenderer>(); 
     }
     void RestartLevel()
     {
@@ -44,23 +42,23 @@ public class PlayerMove : MonoBehaviour
     }
     public void Die()
     {
-        _died = true;
+        _died=true;
         Debug.Log("Player died!");
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
     }
     void Flip()
     {
-        if (!_died)
+        if(!_died)
         {
             _facingRight = !_facingRight;
             Vector3 Scale = transform.localScale;
             Scale.x *= -1;
             //transform.localScale = Scale;
-
+            
         }
     }
-    Vector2 moveInput;
+     Vector2 moveInput;
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -68,22 +66,22 @@ public class PlayerMove : MonoBehaviour
 
         if (moveInput.x > 0)
         {
-            spriteRenderer.flipX = false;
+            spriteRenderer.flipX = false; 
         }
         else if (moveInput.x < 0)
         {
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipX = true; 
         }
     }
     public void FixedUpdate()
     {
-        if (!_died)
+        if(!_died)
         {
             _horizontalMove = Input.GetAxisRaw("Horizontal");
 
             _rigidbody2D.velocity = new Vector2(_horizontalMove * _speed, _rigidbody2D.velocity.y);
 
-            if (!_facingRight && _horizontalMove > 0)
+            if(!_facingRight && _horizontalMove > 0)
             {
                 Flip();
             }
@@ -92,7 +90,7 @@ public class PlayerMove : MonoBehaviour
                 Flip();
             }
 
-            if (_horizontalMove == 0)
+            if(_horizontalMove == 0)
             {
                 _animator.SetBool("Walk", false);
             }
@@ -105,11 +103,11 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
-        if (!_died)
+        if(!_died)
         {
             _healthText.text = "HP: " + _health.ToString();
 
-            if (_health <= 0)
+            if(_health <= 0)
             {
                 _animator.SetTrigger("Died");
                 Invoke(nameof(ResetScene), 2f);
@@ -124,16 +122,16 @@ public class PlayerMove : MonoBehaviour
 
             if (Input.GetButtonDown("Cancel"))
             {
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene(0);  
             }
             _isGrounded = Physics2D.OverlapCircle(_groundCheck.position, _checkRadius, _ground);
 
-            if (_isGrounded && Input.GetKeyDown(KeyCode.Space))
+            if(_isGrounded && Input.GetKeyDown(KeyCode.Space))
             {
                 _rigidbody2D.velocity = Vector2.up * _jumpForce;
             }
 
-            if (_isGrounded)
+            if(_isGrounded)
             {
                 _animator.SetBool("Jump", false);
             }
@@ -146,28 +144,28 @@ public class PlayerMove : MonoBehaviour
             _rotate.transform.rotation = Quaternion.Euler(0f, 0f, rot2 + _offset);
 
 
-            if (_timeShots <= 0)
+            if(_timeShots <= 0)
             {
-                if (Input.GetMouseButton(0))
+                if(Input.GetMouseButton(0) )
                 {
-
-                    _animator.SetBool("Attack", true);
-
+                    
+                    _animator.SetBool("Attack",true);
+                                       
                     _timeShots = _startTimeShots;
                 }
-
+                
             }
             else
             {
-
+                
                 _timeShots -= Time.deltaTime;
             }
 
             _bullet.GetComponent<Bullet>().Direction = Vector2.right;
-
+            
         }
     }
-
+    
     void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -175,7 +173,7 @@ public class PlayerMove : MonoBehaviour
     public void AttackToogle()
     {
         GetComponent<Animator>().SetBool("Attack", false);
-
+        
     }
     public void SetBullet()
     {
@@ -183,7 +181,7 @@ public class PlayerMove : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
-        if (!_died)
+        if(!_died)
         {
             _health -= damage;
             _animator.SetTrigger("Damage");
@@ -211,8 +209,8 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField] float teleportDistance = 5f;
     GameObject firePrefab;
-    [SerializeField] float delayBetweenTeleports = 1f;
-    private float lastTeleportTime = 0f;
+    [SerializeField] float delayBetweenTeleports = 1f; 
+    private float lastTeleportTime = 0f; 
     public void OnTeleport(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -227,7 +225,7 @@ public class PlayerMove : MonoBehaviour
     private IEnumerator Teleport()
     {
         Vector2 newPosition = (Vector2)transform.position + new Vector2(teleportDistance * (spriteRenderer.flipX ? -1 : 1), 0);
-        if (!Physics2D.OverlapCircle(newPosition, 0.1f)) 
+        if (!Physics2D.OverlapCircle(newPosition, 0.1f)) // используйте подходящий радиус
         {
             firePrefab = Resources.Load<GameObject>("FireEffect");
             GameObject Fire = Instantiate(firePrefab, transform.position, Quaternion.identity);
@@ -242,6 +240,10 @@ public class PlayerMove : MonoBehaviour
             Destroy(Fire);
             Destroy(Fire1);
 
+        }
+        else
+        {
+            Debug.Log("Телепортация заблокирована: препятствие");
         }
     }
 
