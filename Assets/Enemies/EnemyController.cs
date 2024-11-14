@@ -2,28 +2,50 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField]
-    private float moveSpeed = 2f;
+    [SerializeField] private int _health;
+    private bool _died;
+    [SerializeField] private float moveSpeed = 2f;
 
-    [SerializeField]
-    private Transform groundCheck; 
-    [SerializeField]
-    private float groundCheckDistance = 1f; 
-    [SerializeField]
-    private LayerMask groundLayer; 
+    [SerializeField] private Transform groundCheck; 
+    [SerializeField] private float groundCheckDistance = 1f; 
+    [SerializeField] private LayerMask groundLayer; 
 
     private bool movingRight = true;
     private Rigidbody2D rb;
 
-    private void Awake()
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
+
 
     private void Update()
     {
         Move();
         CheckForPlatform();
+        if (!_died)
+        {
+            
+            if (_health <= 0)
+                {
+                    //_animator.SetTrigger("Died");
+                    _died = true;
+                    //_player.Score++;
+                }
+        }
+        else
+        {
+            Destroy(gameObject, 1f);
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (!_died)
+        {
+            _health -= damage;
+            //_animator.SetTrigger("Damage");
+        }
     }
 
     private void Move()
