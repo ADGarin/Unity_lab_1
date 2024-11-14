@@ -5,7 +5,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private int _health;
     private bool _died;
     [SerializeField] private float moveSpeed = 2f;
-
+    private Animator _animator;
     [SerializeField] private Transform groundCheck; 
     [SerializeField] private float groundCheckDistance = 1f; 
     [SerializeField] private LayerMask groundLayer; 
@@ -16,6 +16,7 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
     }
 
 
@@ -44,12 +45,14 @@ public class EnemyController : MonoBehaviour
         if (!_died)
         {
             _health -= damage;
-            //_animator.SetTrigger("Damage");
+            _animator.SetBool("mush_walk",false);
+            _animator.SetTrigger("mush_damage");
         }
     }
 
     private void Move()
     {
+        _animator.SetBool("mush_walk",true);
         Vector2 movement = new Vector2(movingRight ? moveSpeed : -moveSpeed, rb.velocity.y);
         rb.velocity = movement;
     }
