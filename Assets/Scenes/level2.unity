@@ -1404,6 +1404,7 @@ MonoBehaviour:
   _startTimeShots: 0.5
   _bullet: {fileID: 2933392597016423420, guid: cc9ddb41f3dae2448b674f38a63efb38, type: 3}
   _shotPoint: {fileID: 941355678}
+  teleportDistance: 5
 --- !u!114 &340371997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1416,7 +1417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: bf0959c0328ad2046bd2c8000afe138e, type: 3}
+  m_Actions: {fileID: -944628639613478452, guid: e392949436c6a1f4eb49dd070f838d66, type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -1509,6 +1510,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: b94828e9-0d63-415e-a314-daaa2feb98a7
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 340371996}
+        m_TargetAssemblyTypeName: PlayerMove, Assembly-CSharp
+        m_MethodName: OnTeleport
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 452de7d6-149d-4413-9e5a-46a8a1d046d2
+    m_ActionName: Player/Teleport[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
