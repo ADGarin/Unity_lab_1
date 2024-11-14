@@ -207,4 +207,45 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    [SerializeField] float teleportDistance = 5f;
+    GameObject firePrefab;
+    [SerializeField] float delayBetweenTeleports = 1f; 
+    private float lastTeleportTime = 0f; 
+    public void OnTeleport(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (Time.time >= lastTeleportTime + delayBetweenTeleports)
+            {
+                StartCoroutine(Teleport());
+            }
+        }
+    }
+
+    private IEnumerator Teleport()
+    {
+        Vector2 newPosition = (Vector2)transform.position + new Vector2(teleportDistance * (spriteRenderer.flipX ? -1 : 1), 0);
+        if (!Physics2D.OverlapCircle(newPosition, 0.1f)) // используйте подходящий радиус
+        {
+            firePrefab = Resources.Load<GameObject>("FireEffect");
+            GameObject Fire = Instantiate(firePrefab, transform.position, Quaternion.identity);
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(0.2f);
+            transform.position = newPosition;
+            spriteRenderer.enabled = true;
+            GameObject Fire1 = Instantiate(firePrefab, transform.position, Quaternion.identity);
+
+            lastTeleportTime = Time.time;
+            yield return new WaitForSeconds(1f);
+            Destroy(Fire);
+            Destroy(Fire1);
+
+        }
+        else
+        {
+            Debug.Log("Телепортация заблокирована: препятствие");
+        }
+    }
+
+
 }
