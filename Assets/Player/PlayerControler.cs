@@ -194,11 +194,16 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField] float teleportDistance = 5f;
     GameObject firePrefab;
+    [SerializeField] float delayBetweenTeleports = 1f; 
+    private float lastTeleportTime = 0f; 
     public void OnTeleport(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            StartCoroutine(Teleport());
+            if (Time.time >= lastTeleportTime + delayBetweenTeleports)
+            {
+                StartCoroutine(Teleport());
+            }
         }
     }
 
@@ -214,6 +219,8 @@ public class PlayerMove : MonoBehaviour
             transform.position = newPosition;
             spriteRenderer.enabled = true;
             GameObject Fire1 = Instantiate(firePrefab, transform.position, Quaternion.identity);
+
+            lastTeleportTime = Time.time;
             yield return new WaitForSeconds(1f);
             Destroy(Fire);
             Destroy(Fire1);
