@@ -1,110 +1,3 @@
-/*using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
-
-public class PlayerMove : MonoBehaviour
-{
-    [SerializeField] float moveSpeed = 100;
-    [SerializeField] float jumpImpulse = 5;
-    [SerializeField] int _health = 5;
-    private bool _died;
-    Rigidbody2D rb;
-    CollisionTouchCheck colTouchCheck;
-    SpriteRenderer spriteRenderer;
-
-    
-
-    void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        colTouchCheck = GetComponent<CollisionTouchCheck>();
-        spriteRenderer = GetComponent<SpriteRenderer>(); 
-        
-    }
-    
-    Vector2 moveInput;
-
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
-
-        if (moveInput.x > 0)
-        {
-            spriteRenderer.flipX = false; 
-        }
-        else if (moveInput.x < 0)
-        {
-            spriteRenderer.flipX = true; 
-        }
-    }
-
-    void Update()
-    {
-        if (transform.position.y <= -10f)
-        {
-            RestartLevel();
-        }
-
-        if (Input.GetButtonDown("Cancel"))
-        {
-            SceneManager.LoadScene(0);  
-        }
-
-    }
-
-    void FixedUpdate()
-    {
-        rb.velocity = new Vector2(moveInput.x * moveSpeed * Time.fixedDeltaTime, rb.velocity.y);
-    }
-
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        if (context.started && colTouchCheck.IsGrounded)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y + jumpImpulse);
-        }
-        else if (context.canceled)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.3f);
-        }
-    }
-
-    void RestartLevel()
-    {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
-    }
-
-    public void TakeDamage(int damage)
-    {
-        if(!_died)
-        {
-            _health -= damage;
-            if (_health<=0)
-            {               
-                Die();               
-            }
-        }
-    }
-
-    public void Die()
-    {
-        _died=true;
-        Debug.Log("Player died!");
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.CompareTag("Enemy"))
-        {
-            Die();
-        }
-    }
-}
-
-*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -298,5 +191,39 @@ public class PlayerMove : MonoBehaviour
             TakeDamage(1);
         }
     }
+
+    [SerializeField] float teleportDistance = 5f;
+    GameObject firePrefab;
+    public void OnTeleport(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            StartCoroutine(Teleport());
+        }
+    }
+
+    private IEnumerator Teleport()
+    {
+        Vector2 newPosition = (Vector2)transform.position + new Vector2(teleportDistance * (spriteRenderer.flipX ? -1 : 1), 0);
+        if (!Physics2D.OverlapCircle(newPosition, 0.1f)) // используйте подходящий радиус
+        {
+            firePrefab = Resources.Load<GameObject>("FireEffect");
+            GameObject Fire = Instantiate(firePrefab, transform.position, Quaternion.identity);
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(0.2f);
+            transform.position = newPosition;
+            spriteRenderer.enabled = true;
+            GameObject Fire1 = Instantiate(firePrefab, transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(1f);
+            Destroy(Fire);
+            Destroy(Fire1);
+
+        }
+        else
+        {
+            Debug.Log("Телепортация заблокирована: препятствие");
+        }
+    }
+
 
 }
