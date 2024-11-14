@@ -164,6 +164,9 @@ public class PlayerMove : MonoBehaviour
             _bullet.GetComponent<Bullet>().Direction = Vector2.right;
             
         }
+
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        PlayerProgress.SaveProgress(currentSceneIndex);
     }
     
     void ResetScene()
@@ -225,7 +228,7 @@ public class PlayerMove : MonoBehaviour
     private IEnumerator Teleport()
     {
         Vector2 newPosition = (Vector2)transform.position + new Vector2(teleportDistance * (spriteRenderer.flipX ? -1 : 1), 0);
-        if (!Physics2D.OverlapCircle(newPosition, 0.1f)) // используйте подходящий радиус
+        if (!Physics2D.OverlapCircle(newPosition, 0.1f)) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         {
             firePrefab = Resources.Load<GameObject>("FireEffect");
             GameObject Fire = Instantiate(firePrefab, transform.position, Quaternion.identity);
@@ -243,7 +246,7 @@ public class PlayerMove : MonoBehaviour
         }
         else
         {
-            Debug.Log("Телепортация заблокирована: препятствие");
+            Debug.Log("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
         }
     }
 
