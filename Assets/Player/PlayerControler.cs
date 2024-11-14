@@ -36,7 +36,6 @@ public class PlayerMove : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         PlayerProgress.SaveProgress(currentSceneIndex);
-        Debug.Log("scene saved!");
     }
     void RestartLevel()
     {
@@ -149,22 +148,18 @@ public class PlayerMove : MonoBehaviour
 
             if (_timeShots <= 0)
             {
-<<<<<<< HEAD
                 if (Input.GetMouseButton(0))
-=======
-                if(Input.GetMouseButton(0) )
->>>>>>> d87e0fe6bae0617a035ecf94b6a0bfc46151cce5
                 {
-                    
-                    _animator.SetBool("Attack",true);
-                                       
+
+                    _animator.SetBool("Attack", true);
+
                     _timeShots = _startTimeShots;
                 }
-                
+
             }
             else
             {
-                
+
                 _timeShots -= Time.deltaTime;
             }
 
@@ -172,7 +167,7 @@ public class PlayerMove : MonoBehaviour
 
         }
     }
-    
+
     void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -180,7 +175,7 @@ public class PlayerMove : MonoBehaviour
     public void AttackToogle()
     {
         GetComponent<Animator>().SetBool("Attack", false);
-        
+
     }
     public void SetBullet()
     {
@@ -232,7 +227,7 @@ public class PlayerMove : MonoBehaviour
     private IEnumerator Teleport()
     {
         Vector2 newPosition = (Vector2)transform.position + new Vector2(teleportDistance * (spriteRenderer.flipX ? -1 : 1), 0);
-        if (!Physics2D.OverlapCircle(newPosition, 0.1f)) // используйте подходящий радиус
+        if (!Physics2D.OverlapCircle(newPosition, 0.1f)) 
         {
             firePrefab = Resources.Load<GameObject>("FireEffect");
             GameObject Fire = Instantiate(firePrefab, transform.position, Quaternion.identity);
@@ -247,10 +242,6 @@ public class PlayerMove : MonoBehaviour
             Destroy(Fire);
             Destroy(Fire1);
 
-        }
-        else
-        {
-            Debug.Log("Телепортация заблокирована: препятствие");
         }
     }
 
