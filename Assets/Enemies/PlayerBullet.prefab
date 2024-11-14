@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.008719432, y: 0.0033504285, z: -0.000029215076, w: 0.99995637}
   m_LocalPosition: {x: 61.3212, y: -2.4246, z: 0.0147}
-  m_LocalScale: {x: 2.1415975, y: 2.0298884, z: 1}
+  m_LocalScale: {x: 0.49098265, y: 0.4653722, z: 0.22926}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -105,3 +105,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   Direction: {x: 0, y: 0}
+  _enemyBullet: 0
